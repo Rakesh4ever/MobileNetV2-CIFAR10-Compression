@@ -3,7 +3,7 @@
 
 **Name:** `<Your Name>`  
 **Roll Number:** `<Your Roll Number>`  
-**GitHub Repository:** `<https://github.com/your-username/mobilenetv2-cifar10-compression>`
+**GitHub Repository:** `https://github.com/Rakesh4ever/MobileNetV2-CIFAR10-Compression`
 
 ---
 
@@ -121,4 +121,4 @@ $$\text{CR}_{\text{weights}} = \frac{\text{Baseline FP32 (Weights + Biases + BN)
 
 - **5(a) Modular Codebase:** Clean separation of data (`src/data.py`), model (`src/model.py`), training (`src/train.py`), evaluation (`src/evaluate.py`), custom compression (`src/compression/*`), CLI (`test.py`), and WandB sweep (`sweep.py`).
 - **5(b) README & Seeds:** Full setup instructions, pinned dependencies (`requirements.txt`), fixed seed (`seed=42` across Python/NumPy/PyTorch/DataLoader), and copy-pasteable commands documented in `README.md`.
-- **5(c) GitHub Repository Link:** `<https://github.com/your-username/mobilenetv2-cifar10-compression>`
+- **5(c) GitHub Repository Link:** `https://github.com/Rakesh4ever/MobileNetV2-CIFAR10-Compression`
