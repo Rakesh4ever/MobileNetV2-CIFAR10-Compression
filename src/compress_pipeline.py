@@ -6,7 +6,6 @@ teacher) during pruning recovery and Quantization-Aware Training (QAT), written
 """
 
 import copy
-import math
 import time
 from typing import Dict, Optional, Tuple
 

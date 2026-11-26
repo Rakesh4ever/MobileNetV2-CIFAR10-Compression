@@ -1,11 +1,8 @@
-"""CLI entrypoint for testing custom MobileNet-v2 compression on CIFAR-10.
+"""CLI entrypoint for compressing and evaluating MobileNet-v2 on CIFAR-10.
 
-Matches the assignment's expected template CLI pattern and extends it with
-structured channel pruning, QAT fine-tuning, mixed-precision boundary protection,
-and live bit-packing verification:
-
+Examples:
     python test.py --weight_quant_bits 8 --activation_quant_bits 8
-    python test.py --weight_quant_bits 4 --activation_quant_bits 4 --prune_ratio 0.35 --qat_epochs 20
+    python test.py --weight_quant_bits 4 --activation_quant_bits 4 --prune_ratio 0.40 --qat_epochs 25
 """
 
 import argparse
@@ -20,7 +17,7 @@ from src.utils import ensure_dir, get_device, save_json, set_seed
 
 
 def print_report_summary(report: dict) -> None:
-    """Print a clean, readable report matching all PDF checklist items."""
+    """Print a structured summary of accuracy, memory footprint, and compression ratios."""
     cfg = report["config"]
     acc = report["accuracy"]
     comp = report["compression"]
@@ -78,7 +75,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--no_prune_head", action="store_true", help="Do not prune 1280-ch head_conv")
     parser.add_argument("--no_protect_first_last", action="store_true", help="Quantize stem & classifier uniformly")
     parser.add_argument("--prune_ft_epochs", type=int, default=12, help="Recovery epochs after structured pruning")
-    parser.add_argument("--qat_epochs", type=int, default=15, help="QAT fine-tuning epochs (0 for pure PTQ)")
+    parser.add_argument("--qat_epochs", type=int, default=0, help="QAT fine-tuning epochs (0 for fast calibrated PTQ; e.g. 20-30 for low-bit QAT)")
     parser.add_argument("--prune_lr", type=float, default=0.015)
     parser.add_argument("--qat_lr", type=float, default=1e-3)
     parser.add_argument("--kd_alpha", type=float, default=0.5, help="Teacher distillation weight (0 disables KD)")

@@ -13,14 +13,17 @@ Compression is strictly evaluated on **in-memory RAM/VRAM footprint** (weights, 
 
 ```text
 mobilenetv2-cifar10-compression/
-├── README.md                        # Setup, seed config, and exact reproduction commands
+├── README.md                        # Setup, seed config, results, and reproduction commands
 ├── requirements.txt                 # Python dependencies
 ├── colab_runner.ipynb               # End-to-end Google Colab GPU notebook
-├── report_template.md               # Structured report template for PDF submission
+├── report_final.md                  # Full experimental report and compression analysis
 ├── test.py                          # CLI entrypoint (`--weight_quant_bits`, `--activation_quant_bits`, ...)
-├── sweep.py                         # 8- or 16-run compression sweep with WandB Parallel Coordinates logging
+├── sweep.py                         # 8- or 16-run compression sweep with WandB logging
+├── checkpoints/
+│   └── baseline_best.pth            # Pretrained FP32 MobileNet-v2 baseline (95.01% Top-1)
+├── results/                         # Training curves, confusion matrix, sweep tables & plots
 ├── scripts/
-│   └── smoke_test.py                # Fast synthetic-tensor verification of all custom modules
+│   └── smoke_test.py                # Unit & integration verification of custom compression modules
 └── src/
     ├── utils.py                     # Reproducibility seeding, device helpers, environment info
     ├── data.py                      # CIFAR-10 normalization, augmentation, and calibration loader
@@ -58,8 +61,26 @@ mobilenetv2-cifar10-compression/
 
 ## Environment & Reproducibility
 
-- **Recommended Runtime:** Google Colab GPU (NVIDIA T4 / L4 / A100), Python 3.10+, PyTorch 2.1+
+- **Verified Experimental Environment (Google Colab):** Python `3.13.16`, PyTorch `2.14.1+cu130`, torchvision `0.29.1+cu130`, CUDA `13.0`, NVIDIA `Tesla T4` GPU.
 - **Random Seed Configuration:** Default `--seed 42` fixes `random`, `numpy`, `torch.manual_seed`, `torch.cuda.manual_seed_all`, `cudnn.deterministic = True`, `cudnn.benchmark = False`, and PyTorch `DataLoader` generators.
+
+---
+
+## Experimental Results Summary
+
+- **Uncompressed FP32 MobileNet-v2 Baseline:** **95.01% Top-1** (`99.71%` Top-5) | `2,236,682` trainable params | **8.6624 MB** in-memory (`6.1944 MB` total / `1.1250 MB` peak activations for `(1, 3, 32, 32)`).
+- **Live Bit-Packing Verification:** All 16 sweep configurations verified exact byte match (`PackedCompressedModel` live `uint8`+`float16` RAM bytes == analytical bytes) with `0.0` max dequantization roundtrip error.
+
+| Pareto Configuration | W-bits | A-bits | Prune | PTQ Acc (%) | Final QAT Acc (%) | Weight CR | Act CR (Total / Peak) | Model CR | Final Size (MB) | Overhead (KB) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `W4_A6_P00` | 4 | 6 | 0.00 | 94.23 | **94.90** | 7.72x | 5.33x / 5.33x | **7.71x** | 1.1229 | 67.70 |
+| `W4_A4_P40` | 4 | 4 | 0.40 | 91.04 | **93.93** | 12.80x | 12.20x / 13.09x | **12.79x** | 0.6772 | 43.54 |
+| `W4_A4_P55` | 4 | 4 | 0.55 | 90.11 | **93.05** | 16.99x | 15.30x / **18.00x** | **16.98x** | 0.5101 | 34.45 |
+| `W3_A4_P45` | 3 | 4 | 0.45 | 81.70 | **92.89** | 18.15x | 13.13x / 14.40x | **18.14x** | 0.4776 | 40.45 |
+| `W3_A3_P40` | 3 | 3 | 0.40 | 41.95 | **91.80** | 16.65x | **16.23x** / 17.45x | **16.64x** | 0.5205 | 43.54 |
+| `W2_A4_P35` | 2 | 4 | 0.35 | 10.71 | **91.48** | **22.02x** | 11.38x / 12.00x | **22.01x** | **0.3936** | 46.54 |
+
+Full 16-run results and figures are available in [`results/sweep_summary.md`](results/sweep_summary.md) and [`report_final.md`](report_final.md).
 
 ### Installation
 
@@ -103,26 +124,26 @@ Outputs generated:
 python -m src.evaluate --checkpoint ./checkpoints/baseline_best.pth --output_dir ./results
 ```
 
-### 3. Run Single Compression Configuration (`test.py` — Question 2)
+### 3. Run Single Compression Configuration (`test.py`)
 
-Standard assignment CLI pattern (8-bit weights, 8-bit activations):
+The trained FP32 baseline (`95.01%` Top-1) is included at `checkpoints/baseline_best.pth`, so you can run compression evaluation immediately after cloning.
+
+8-bit weights and 8-bit activations (fast calibrated PTQ, ~95.04% Top-1):
 
 ```bash
-python test.py --weight_quant_bits 8 --activation_quant_bits 8 --checkpoint ./checkpoints/baseline_best.pth
+python test.py --weight_quant_bits 8 --activation_quant_bits 8
 ```
 
-Extended custom compression (40% structured pruning + 4-bit weights + 4-bit activations + QAT):
+Extended custom compression with structured pruning + QAT fine-tuning (e.g., `W3_A4_P45` — `92.89%` Top-1, `18.14x` model CR, `0.4776 MB`):
 
 ```bash
 python test.py \
-    --weight_quant_bits 4 \
+    --weight_quant_bits 3 \
     --activation_quant_bits 4 \
-    --prune_ratio 0.40 \
-    --qat_epochs 25 \
+    --prune_ratio 0.45 \
     --prune_ft_epochs 15 \
-    --checkpoint ./checkpoints/baseline_best.pth \
-    --seed 42 \
-    --save_json ./results/w4a4_p40_report.json
+    --qat_epochs 30 \
+    --seed 42
 ```
 
 ### 4. Run Compression Sweep & Log to WandB (Questions 3 & 4)

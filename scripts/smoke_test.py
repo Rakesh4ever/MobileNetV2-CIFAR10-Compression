@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import torch
 
 from src.compression import (
-    PackedCompressedModel,
     compute_full_compression_report,
     fold_model_batchnorm,
     pack_int_tensor,

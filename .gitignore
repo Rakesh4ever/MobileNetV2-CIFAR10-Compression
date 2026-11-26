@@ -4,9 +4,9 @@ __pycache__/
 .DS_Store
 .ipynb_checkpoints/
 data/
-checkpoints/
+checkpoints/*
+!checkpoints/baseline_best.pth
 wandb/
-*.pth
 *.pt
 *.ckpt
 .venv/

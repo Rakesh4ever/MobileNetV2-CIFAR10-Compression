@@ -1,0 +1,115 @@
+{
+  "best_test_top1_acc": 95.01,
+  "best_epoch": 200,
+  "total_params": 2236682,
+  "training_minutes": 143.8,
+  "checkpoint_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/checkpoints/baseline_best.pth",
+  "curves_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results/baseline_curves.png",
+  "failure_summary": {
+    "top1_acc": 95.01,
+    "top5_acc": 99.71,
+    "test_loss": 0.19973,
+    "total_errors": 499,
+    "per_class_acc": {
+      "airplane": 96.7,
+      "automobile": 97.3,
+      "bird": 92.9,
+      "cat": 89.3,
+      "deer": 95.8,
+      "dog": 90.7,
+      "frog": 96.9,
+      "horse": 97.1,
+      "ship": 96.5,
+      "truck": 96.9
+    },
+    "top_confused_pairs": [
+      {
+        "true": "dog",
+        "pred": "cat",
+        "count": 63
+      },
+      {
+        "true": "cat",
+        "pred": "dog",
+        "count": 61
+      },
+      {
+        "true": "automobile",
+        "pred": "truck",
+        "count": 20
+      },
+      {
+        "true": "bird",
+        "pred": "cat",
+        "count": 17
+      },
+      {
+        "true": "truck",
+        "pred": "automobile",
+        "count": 15
+      },
+      {
+        "true": "airplane",
+        "pred": "ship",
+        "count": 15
+      },
+      {
+        "true": "bird",
+        "pred": "deer",
+        "count": 14
+      },
+      {
+        "true": "ship",
+        "pred": "airplane",
+        "count": 13
+      },
+      {
+        "true": "frog",
+        "pred": "bird",
+        "count": 13
+      },
+      {
+        "true": "cat",
+        "pred": "frog",
+        "count": 13
+      }
+    ],
+    "confusion_matrix_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results/confusion_matrix.png",
+    "failure_modes_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results/failure_modes.png"
+  },
+  "environment": {
+    "python_version": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "torch_version": "2.14.1+cu130",
+    "cuda_available": "True",
+    "cuda_version": "13.0",
+    "gpu_name": "Tesla T4",
+    "torchvision_version": "0.29.1+cu130"
+  },
+  "train_args": {
+    "data_dir": "./data",
+    "save_dir": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/checkpoints",
+    "results_dir": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results",
+    "epochs": 200,
+    "batch_size": 128,
+    "eval_batch_size": 256,
+    "lr": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 5,
+    "label_smoothing": 0.05,
+    "width_mult": 1.0,
+    "dropout": 0.2,
+    "bn_momentum": 0.1,
+    "bn_eps": 1e-05,
+    "no_random_erasing": false,
+    "num_workers": 2,
+    "seed": 42,
+    "device": null,
+    "no_amp": false,
+    "fast_cudnn": false,
+    "no_tqdm": true,
+    "wandb": true,
+    "wandb_project": "mobilenetv2-cifar10-compression"
+  }
+}

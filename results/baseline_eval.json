@@ -1,0 +1,72 @@
+{
+  "top1_acc": 95.01,
+  "top5_acc": 99.71,
+  "test_loss": 0.19973,
+  "total_errors": 499,
+  "per_class_acc": {
+    "airplane": 96.7,
+    "automobile": 97.3,
+    "bird": 92.9,
+    "cat": 89.3,
+    "deer": 95.8,
+    "dog": 90.7,
+    "frog": 96.9,
+    "horse": 97.1,
+    "ship": 96.5,
+    "truck": 96.9
+  },
+  "top_confused_pairs": [
+    {
+      "true": "dog",
+      "pred": "cat",
+      "count": 63
+    },
+    {
+      "true": "cat",
+      "pred": "dog",
+      "count": 61
+    },
+    {
+      "true": "automobile",
+      "pred": "truck",
+      "count": 20
+    },
+    {
+      "true": "bird",
+      "pred": "cat",
+      "count": 17
+    },
+    {
+      "true": "truck",
+      "pred": "automobile",
+      "count": 15
+    },
+    {
+      "true": "airplane",
+      "pred": "ship",
+      "count": 15
+    },
+    {
+      "true": "bird",
+      "pred": "deer",
+      "count": 14
+    },
+    {
+      "true": "ship",
+      "pred": "airplane",
+      "count": 13
+    },
+    {
+      "true": "frog",
+      "pred": "bird",
+      "count": 13
+    },
+    {
+      "true": "cat",
+      "pred": "frog",
+      "count": 13
+    }
+  ],
+  "confusion_matrix_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results/confusion_matrix.png",
+  "failure_modes_path": "/content/drive/MyDrive/MobileNetV2-CIFAR10-Compression/results/failure_modes.png"
+}

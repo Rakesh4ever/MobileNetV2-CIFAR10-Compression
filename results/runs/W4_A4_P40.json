@@ -1,0 +1,850 @@
+{
+  "config": {
+    "weight_quant_bits": 4,
+    "activation_quant_bits": 4,
+    "prune_ratio": 0.4,
+    "prune_head": true,
+    "protect_first_last": true,
+    "prune_ft_epochs": 15,
+    "qat_epochs": 25,
+    "kd_alpha": 0.5
+  },
+  "accuracy": {
+    "baseline_fp32_acc": 95.01,
+    "pruned_fp32_acc": 94.65,
+    "ptq_acc": 91.04,
+    "quantized_acc": 93.93,
+    "acc_drop_vs_baseline": 1.08
+  },
+  "compression": {
+    "baseline_model_mb": 8.662391662597656,
+    "baseline_model_bytes": 9083176,
+    "baseline_params": 2236682,
+    "compressed_model_mb": 0.6771564483642578,
+    "compressed_model_bytes": 710050,
+    "compressed_weight_params": 1322380,
+    "weight_payload_bytes": 665462,
+    "storage_overhead_bytes": 44588,
+    "storage_overhead_kb": 43.54296875,
+    "overhead_breakdown": {
+      "scale_overhead_bytes": 21764,
+      "bias_overhead_bytes": 21764,
+      "act_meta_bytes": 212,
+      "header_meta_bytes": 848
+    },
+    "weight_compression_ratio": 12.796125313099608,
+    "activation_compression_ratio": 12.203331492107152,
+    "activation_peak_compression_ratio": 13.09032802166097,
+    "model_compression_ratio": 12.792304767269911,
+    "runtime_combined_compression_ratio": 12.539964453145124,
+    "baseline_activation_total_mb": 6.194374084472656,
+    "compressed_activation_total_mb": 0.5075969696044922,
+    "baseline_activation_peak_mb": 1.125,
+    "compressed_activation_peak_mb": 0.08594131469726562,
+    "packing_verification": {
+      "live_packed_total_bytes": 710050,
+      "live_packed_total_mb": 0.6771564483642578,
+      "matches_analytical_bytes": true,
+      "max_roundtrip_dequant_error": 0.0
+    }
+  },
+  "pruning_summary": {
+    "prune_ratio_target": 0.4,
+    "prune_head": true,
+    "layers_pruned": 17,
+    "details": [
+      {
+        "layer": "blocks.1 (hidden_expand)",
+        "orig_channels": 96,
+        "kept_channels": 56,
+        "actual_prune_ratio": 0.4167
+      },
+      {
+        "layer": "blocks.2 (hidden_expand)",
+        "orig_channels": 144,
+        "kept_channels": 88,
+        "actual_prune_ratio": 0.3889
+      },
+      {
+        "layer": "blocks.3 (hidden_expand)",
+        "orig_channels": 144,
+        "kept_channels": 88,
+        "actual_prune_ratio": 0.3889
+      },
+      {
+        "layer": "blocks.4 (hidden_expand)",
+        "orig_channels": 192,
+        "kept_channels": 116,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.5 (hidden_expand)",
+        "orig_channels": 192,
+        "kept_channels": 116,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.6 (hidden_expand)",
+        "orig_channels": 192,
+        "kept_channels": 116,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.7 (hidden_expand)",
+        "orig_channels": 384,
+        "kept_channels": 232,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.8 (hidden_expand)",
+        "orig_channels": 384,
+        "kept_channels": 232,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.9 (hidden_expand)",
+        "orig_channels": 384,
+        "kept_channels": 232,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.10 (hidden_expand)",
+        "orig_channels": 384,
+        "kept_channels": 232,
+        "actual_prune_ratio": 0.3958
+      },
+      {
+        "layer": "blocks.11 (hidden_expand)",
+        "orig_channels": 576,
+        "kept_channels": 344,
+        "actual_prune_ratio": 0.4028
+      },
+      {
+        "layer": "blocks.12 (hidden_expand)",
+        "orig_channels": 576,
+        "kept_channels": 344,
+        "actual_prune_ratio": 0.4028
+      },
+      {
+        "layer": "blocks.13 (hidden_expand)",
+        "orig_channels": 576,
+        "kept_channels": 344,
+        "actual_prune_ratio": 0.4028
+      },
+      {
+        "layer": "blocks.14 (hidden_expand)",
+        "orig_channels": 960,
+        "kept_channels": 576,
+        "actual_prune_ratio": 0.4
+      },
+      {
+        "layer": "blocks.15 (hidden_expand)",
+        "orig_channels": 960,
+        "kept_channels": 576,
+        "actual_prune_ratio": 0.4
+      },
+      {
+        "layer": "blocks.16 (hidden_expand)",
+        "orig_channels": 960,
+        "kept_channels": 576,
+        "actual_prune_ratio": 0.4
+      },
+      {
+        "layer": "head_conv + classifier",
+        "orig_channels": 1280,
+        "kept_channels": 768,
+        "actual_prune_ratio": 0.4
+      }
+    ]
+  },
+  "layer_policy": [
+    {
+      "layer": "stem.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        32,
+        3,
+        3,
+        3
+      ],
+      "weight_bits": 8,
+      "act_bits": 8,
+      "protected_exception": true
+    },
+    {
+      "layer": "blocks.0.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        32,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.0.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        16,
+        32,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.1.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        56,
+        16,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.1.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        56,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.1.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        24,
+        56,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.2.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        88,
+        24,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.2.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        88,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.2.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        24,
+        88,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.3.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        88,
+        24,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.3.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        88,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.3.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        32,
+        88,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.4.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        116,
+        32,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.4.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        116,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.4.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        32,
+        116,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.5.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        116,
+        32,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.5.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        116,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.5.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        32,
+        116,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.6.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        116,
+        32,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.6.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        116,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.6.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        64,
+        116,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.7.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        232,
+        64,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.7.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        232,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.7.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        64,
+        232,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.8.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        232,
+        64,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.8.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        232,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.8.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        64,
+        232,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.9.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        232,
+        64,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.9.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        232,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.9.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        64,
+        232,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.10.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        232,
+        64,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.10.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        232,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.10.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        96,
+        232,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.11.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        344,
+        96,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.11.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        344,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.11.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        96,
+        344,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.12.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        344,
+        96,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.12.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        344,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.12.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        96,
+        344,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.13.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        344,
+        96,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.13.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        344,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.13.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        160,
+        344,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.14.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        576,
+        160,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.14.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        576,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.14.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        160,
+        576,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.15.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        576,
+        160,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.15.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        576,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.15.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        160,
+        576,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.16.pw_expand.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        576,
+        160,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.16.dw_conv.0",
+      "type": "DepthwiseConv2d",
+      "weight_shape": [
+        576,
+        1,
+        3,
+        3
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "blocks.16.pw_project.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        320,
+        576,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "head_conv.0",
+      "type": "Conv2d",
+      "weight_shape": [
+        768,
+        320,
+        1,
+        1
+      ],
+      "weight_bits": 4,
+      "act_bits": 4,
+      "protected_exception": false
+    },
+    {
+      "layer": "classifier.1",
+      "type": "Linear",
+      "weight_shape": [
+        10,
+        768
+      ],
+      "weight_bits": 8,
+      "act_bits": 8,
+      "protected_exception": true
+    }
+  ],
+  "elapsed_seconds": 3373.9
+}

@@ -50,12 +50,6 @@ def save_json(data: Dict[str, Any], path: str) -> None:
         json.dump(data, f, indent=2)
 
 
-def load_json(path: str) -> Dict[str, Any]:
-    """Load a JSON file into a dictionary."""
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
 class AverageMeter:
     """Tracks running average and current value of scalar metrics."""
 
